@@ -1,7 +1,7 @@
 import 'package:jobsearch_server/jobsearch_server.dart';
 import 'package:jobsearch_server/model/user.dart';
 
-enum DocumentFileType {
+enum _DocumentFileType {
   passport, other
 }
 
@@ -11,13 +11,11 @@ class _DocumentFile {
   @primaryKey
   int id;
 
-  DocumentFileType type;
+  _DocumentFileType type;
 
   @Column(unique: true)
   String filePath;
 
   @Relate(#documents, onDelete: DeleteRule.cascade)
   User owner;
-
-
 }

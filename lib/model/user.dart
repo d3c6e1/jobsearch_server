@@ -1,5 +1,7 @@
 import 'package:jobsearch_server/jobsearch_server.dart';
-import 'package:jobsearch_server/model/document.dart';
+import 'package:jobsearch_server/model/cv.dart';
+import 'package:jobsearch_server/model/document_file.dart';
+import 'package:jobsearch_server/model/organization.dart';
 
 class User extends ManagedObject<_User> implements _User{}
 
@@ -24,4 +26,7 @@ class _User {
 
   ManagedSet<DocumentFile> documents;
 
+  ManagedSet<CV> cvs;
+
+  Organization organization;
 }
