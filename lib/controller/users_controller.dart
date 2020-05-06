@@ -8,10 +8,10 @@ class UsersController extends ResourceController {
   final ManagedContext context;
   
   @Operation.get()
-  Future<Response> getAllUsers({@Bind.query('name') String name}) async {
+  Future<Response> getAllUsers({@Bind.query('username') String username}) async {
     final userQuery = Query<User>(context);
-    if (name != null) {
-      userQuery.where((user) => user.name).contains(name, caseSensitive: false);
+    if (username != null) {
+      userQuery.where((user) => user.username).contains(username, caseSensitive: false);
     }
     final users = await userQuery.fetch();
 
@@ -29,5 +29,15 @@ class UsersController extends ResourceController {
       return Response.notFound();
     }
     return Response.ok(user);
+  }
+
+  @Operation.post()
+  Future<Response> createUser(@Bind.body(ignore: ["id", 'documents', 'cvs', 'organization']) User user) async {
+    final query = Query<User>(context)
+      ..values = user;
+
+    final insertedUser = await query.insert();
+
+    return Response.ok(insertedUser);
   }
 }
