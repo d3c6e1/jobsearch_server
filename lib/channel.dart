@@ -2,9 +2,9 @@ import 'package:aqueduct/managed_auth.dart';
 import 'package:jobsearch_server/controller/cv_controller.dart';
 import 'package:jobsearch_server/controller/doc_files_controller.dart';
 import 'package:jobsearch_server/controller/organization_controller.dart';
+import 'package:jobsearch_server/controller/register_controller.dart';
 import 'package:jobsearch_server/controller/vacancies_controller.dart';
 import 'package:jobsearch_server/model/user.dart';
-import 'controller/users_controller.dart';
 import 'jobsearch_server.dart';
 
 class JobsearchConfiguration extends Configuration {
@@ -42,8 +42,8 @@ class JobsearchServerChannel extends ApplicationChannel {
     final router = Router();
 
     router
-    .route('/users/[:id]')
-    .link(() => UsersController(context));
+    .route('/register')
+    .link(() => RegisterController(context, authServer));
 
     router
     .route('/files/[:id]')
