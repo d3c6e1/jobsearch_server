@@ -3,6 +3,7 @@ import 'package:jobsearch_server/controller/cv_controller.dart';
 import 'package:jobsearch_server/controller/doc_files_controller.dart';
 import 'package:jobsearch_server/controller/organization_controller.dart';
 import 'package:jobsearch_server/controller/register_controller.dart';
+import 'package:jobsearch_server/controller/users_controller.dart';
 import 'package:jobsearch_server/controller/vacancies_controller.dart';
 import 'package:jobsearch_server/model/user.dart';
 import 'jobsearch_server.dart';
@@ -42,24 +43,33 @@ class JobsearchServerChannel extends ApplicationChannel {
     final router = Router();
 
     router
-    .route('/register')
-    .link(() => RegisterController(context, authServer));
+      .route('/register')
+      .link(() => RegisterController(context, authServer));
 
     router
-    .route('/files/[:id]')
-    .link(() => DocumentFilesController(context));
+      .route('/auth/token')
+      .link(() => AuthController(authServer));
 
     router
-    .route('/organizations/[:id]')
-    .link(() => OrganizationController(context));
+      .route('/files/[:id]')
+      .link(() => Authorizer.bearer(authServer))
+      .link(() => DocumentFilesController(context));
 
     router
-    .route('/cvs/[:id]')
-    .link(() => CVController(context));
+      .route('/users/[:id]')
+      .link(() => UsersController(context));
+
+    router
+      .route('/organizations/[:id]')
+      .link(() => OrganizationController(context));
+
+    router
+      .route('/cvs/[:id]')
+      .link(() => CVController(context));
     
     router
-    .route('/vacancies/[:id]')
-    .link(() => VacanciesController(context));
+      .route('/vacancies/[:id]')
+      .link(() => VacanciesController(context));
 
     return router;
   }
