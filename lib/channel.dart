@@ -1,8 +1,10 @@
+import 'package:aqueduct/managed_auth.dart';
 import 'package:jobsearch_server/controller/cv_controller.dart';
 import 'package:jobsearch_server/controller/doc_files_controller.dart';
 import 'package:jobsearch_server/controller/organization_controller.dart';
+import 'package:jobsearch_server/controller/register_controller.dart';
 import 'package:jobsearch_server/controller/vacancies_controller.dart';
-import 'controller/users_controller.dart';
+import 'package:jobsearch_server/model/user.dart';
 import 'jobsearch_server.dart';
 
 class JobsearchConfiguration extends Configuration {
@@ -14,11 +16,13 @@ class JobsearchConfiguration extends Configuration {
 class JobsearchServerChannel extends ApplicationChannel {
   ManagedContext context;
 
+  AuthServer authServer;
+
   @override
   Future prepare() async {
-    final config = JobsearchConfiguration(options.configurationFilePath);
-
     logger.onRecord.listen((rec) => print("$rec ${rec.error ?? ""} ${rec.stackTrace ?? ""}"));
+
+    final config = JobsearchConfiguration(options.configurationFilePath);
     final dataModel = ManagedDataModel.fromCurrentMirrorSystem();
     final persistentStore = PostgreSQLPersistentStore.fromConnectionInfo(
       config.database.username,
@@ -28,6 +32,9 @@ class JobsearchServerChannel extends ApplicationChannel {
       config.database.databaseName);
 
     context = ManagedContext(dataModel, persistentStore);
+
+    final authStorage = ManagedAuthDelegate<User>(context);
+    authServer = AuthServer(authStorage);
   }
 
   @override
@@ -35,8 +42,8 @@ class JobsearchServerChannel extends ApplicationChannel {
     final router = Router();
 
     router
-    .route('/users/[:id]')
-    .link(() => UsersController(context));
+    .route('/register')
+    .link(() => RegisterController(context, authServer));
 
     router
     .route('/files/[:id]')
