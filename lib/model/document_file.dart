@@ -16,6 +16,6 @@ class _DocumentFile {
   @Column(unique: true)
   String filePath;
 
-  // @Relate(#documents, onDelete: DeleteRule.cascade)
-  // User owner;
+  @Relate(#documents, onDelete: DeleteRule.cascade)
+  User owner;
 }

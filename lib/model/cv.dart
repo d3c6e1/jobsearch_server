@@ -14,8 +14,8 @@ class _CV {
   @Column()
   DateTime publishDate;
 
-  // @Relate(#cvs, onDelete: DeleteRule.cascade)
-  // User owner;
+  @Relate(#cvs, onDelete: DeleteRule.cascade)
+  User owner;
 
   @Column()
   Document data;

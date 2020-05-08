@@ -1,6 +1,6 @@
 database:
-  username: jobsearch_admin
-  password: '1'
+  username: dbuser
+  password: qaz
   host: localhost
   port: 5432
   databaseName: jobsearch

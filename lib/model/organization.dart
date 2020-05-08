@@ -12,8 +12,8 @@ class _Organization {
   @Column(unique: true)
   String name;
 
-  // @Relate(#organization, onDelete: DeleteRule.cascade)
-  // User owner;
+  @Relate(#organization, onDelete: DeleteRule.cascade)
+  User owner;
 
   ManagedSet<Vacancy> vacancies;
 }
