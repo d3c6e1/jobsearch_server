@@ -1,11 +1,6 @@
 import 'package:aqueduct/managed_auth.dart';
-import 'package:jobsearch_server/controller/cv_controller.dart';
-import 'package:jobsearch_server/controller/doc_files_controller.dart';
-import 'package:jobsearch_server/controller/organization_controller.dart';
-import 'package:jobsearch_server/controller/register_controller.dart';
-import 'package:jobsearch_server/controller/users_controller.dart';
-import 'package:jobsearch_server/controller/vacancies_controller.dart';
-import 'package:jobsearch_server/model/user.dart';
+import 'package:jobsearch_server/controller/controller.dart';
+import 'package:jobsearch_server/model/model.dart';
 import 'jobsearch_server.dart';
 
 class JobsearchConfiguration extends Configuration {
@@ -21,6 +16,7 @@ class JobsearchServerChannel extends ApplicationChannel {
 
   @override
   Future prepare() async {
+    Controller.includeErrorDetailsInServerErrorResponses = true;
     logger.onRecord.listen((rec) => print("$rec ${rec.error ?? ""} ${rec.stackTrace ?? ""}"));
 
     final config = JobsearchConfiguration(options.configurationFilePath);
@@ -43,13 +39,20 @@ class JobsearchServerChannel extends ApplicationChannel {
     final router = Router();
 
     router
-      .route('/register')
-      .link(() => RegisterController(context, authServer));
-
-    router
       .route('/auth/token')
       .link(() => AuthController(authServer));
 
+    router
+      .route('/register')
+      .link(() => Authorizer.basic(authServer))
+      .link(() => RegisterController(context, authServer));
+
+    router
+      .route('/profile')
+      .link(() => Authorizer.bearer(authServer))
+      .link(() => IdentityController(context));
+
+    //проверить аутентификацию на клиенте
     router
       .route('/files/[:id]')
       .link(() => Authorizer.bearer(authServer))
