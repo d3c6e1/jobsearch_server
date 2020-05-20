@@ -1,10 +1,6 @@
 import 'package:aqueduct/managed_auth.dart';
-import 'package:jobsearch_server/controller/cv_controller.dart';
-import 'package:jobsearch_server/controller/doc_files_controller.dart';
-import 'package:jobsearch_server/controller/organization_controller.dart';
-import 'package:jobsearch_server/controller/register_controller.dart';
-import 'package:jobsearch_server/controller/vacancies_controller.dart';
-import 'package:jobsearch_server/model/user.dart';
+import 'package:jobsearch_server/controller/controller.dart';
+import 'package:jobsearch_server/model/model.dart';
 import 'jobsearch_server.dart';
 
 class JobsearchConfiguration extends Configuration {
@@ -20,6 +16,7 @@ class JobsearchServerChannel extends ApplicationChannel {
 
   @override
   Future prepare() async {
+    Controller.includeErrorDetailsInServerErrorResponses = true;
     logger.onRecord.listen((rec) => print("$rec ${rec.error ?? ""} ${rec.stackTrace ?? ""}"));
 
     final config = JobsearchConfiguration(options.configurationFilePath);
@@ -40,26 +37,44 @@ class JobsearchServerChannel extends ApplicationChannel {
   @override
   Controller get entryPoint {
     final router = Router();
+    /* OAuth 2.0 Resource Owner Grant Endpoint */
+    router
+      .route('/auth/token')
+      .link(() => AuthController(authServer));
+
+    /* Create an account */
+    router
+      .route('/register')
+      .link(() => Authorizer.basic(authServer))
+      .link(() => RegisterController(context, authServer));
+      
+    /* Gets profile for user with bearer token */
+    router
+      .route('/profile')
+      .link(() => Authorizer.bearer(authServer))
+      .link(() => IdentityController(context));
+
+    //сделать нормальную аутентификацию
+    router
+      .route('/files/[:id]')
+      .link(() => Authorizer.bearer(authServer))
+      .link(() => DocumentFilesController(context));
 
     router
-    .route('/register')
-    .link(() => RegisterController(context, authServer));
+      .route('/users/[:id]')
+      .link(() => UsersController(context));
 
     router
-    .route('/files/[:id]')
-    .link(() => DocumentFilesController(context));
+      .route('/organizations/[:id]')
+      .link(() => OrganizationController(context));
 
     router
-    .route('/organizations/[:id]')
-    .link(() => OrganizationController(context));
-
-    router
-    .route('/cvs/[:id]')
-    .link(() => CVController(context));
+      .route('/cvs/[:id]')
+      .link(() => CVController(context));
     
     router
-    .route('/vacancies/[:id]')
-    .link(() => VacanciesController(context));
+      .route('/vacancies/[:id]')
+      .link(() => VacanciesController(context));
 
     return router;
   }

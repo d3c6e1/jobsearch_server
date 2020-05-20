@@ -8,7 +8,10 @@ class OrganizationController extends ResourceController{
 
   @Operation.get()
   Future<Response> getAllOrganiztions({@Bind.query('name') String name}) async {
-    final query = Query<Organization>(context);
+    final query = Query<Organization>(context)
+      ..join(set: (o) => o.vacancies)
+      ..join(object: (o) => o.owner);
+      
     if (name != null) {
       query.where((org) => org.name).contains(name, caseSensitive: false);
     }
@@ -20,7 +23,9 @@ class OrganizationController extends ResourceController{
   @Operation.get('id')
   Future<Response> getOrganizationByID(@Bind.path('id') int id) async {
     final query = Query<Organization>(context)
-      ..where((org) => org.id).equalTo(id);
+      ..where((org) => org.id).equalTo(id)
+      ..join(set: (o) => o.vacancies)
+      ..join(object: (o) => o.owner);
 
     final org = await query.fetchOne();
 
@@ -28,5 +33,15 @@ class OrganizationController extends ResourceController{
       return Response.notFound();
     }
     return Response.ok(org);
+  }
+
+  @Operation.post()
+  Future<Response> createOrganization(@Bind.body(ignore: ["id"]) Organization organization) async {
+    final query = Query<Organization>(context)
+      ..values = organization;
+
+    final insertedOrganization = await query.insert();
+
+    return Response.ok(insertedOrganization);
   }
 }
