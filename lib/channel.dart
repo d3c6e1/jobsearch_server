@@ -37,22 +37,24 @@ class JobsearchServerChannel extends ApplicationChannel {
   @override
   Controller get entryPoint {
     final router = Router();
-
+    /* OAuth 2.0 Resource Owner Grant Endpoint */
     router
       .route('/auth/token')
       .link(() => AuthController(authServer));
 
+    /* Create an account */
     router
       .route('/register')
       .link(() => Authorizer.basic(authServer))
       .link(() => RegisterController(context, authServer));
-
+      
+    /* Gets profile for user with bearer token */
     router
       .route('/profile')
       .link(() => Authorizer.bearer(authServer))
       .link(() => IdentityController(context));
 
-    //проверить аутентификацию на клиенте
+    //сделать нормальную аутентификацию
     router
       .route('/files/[:id]')
       .link(() => Authorizer.bearer(authServer))
