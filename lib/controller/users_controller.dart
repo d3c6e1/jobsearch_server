@@ -11,7 +11,7 @@ class UsersController extends ResourceController {
   Future<Response> getAllUsers({@Bind.query('username') String username}) async {
     final userQuery = Query<User>(context)
       ..join(set: (u) => u.cvs)
-      // ..join(set: (u) => u.documents)
+      ..join(set: (u) => u.documents)
       ..join(object: (u) => u.organization);
     
     if (username != null) {
@@ -27,7 +27,7 @@ class UsersController extends ResourceController {
     final userQuery = Query<User>(context)
       ..where((user) => user.id).equalTo(id)
       ..join(set: (u) => u.cvs)
-      // ..join(set: (u) => u.documents)
+      ..join(set: (u) => u.documents)
       ..join(object: (u) => u.organization);
 
     final user = await userQuery.fetchOne();
