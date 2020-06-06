@@ -9,10 +9,7 @@ class UsersController extends ResourceController {
   
   @Operation.get()
   Future<Response> getAllUsers({@Bind.query('username') String username}) async {
-    final userQuery = Query<User>(context)
-      ..join(set: (u) => u.cvs)
-      ..join(set: (u) => u.documents)
-      ..join(object: (u) => u.organization);
+    final userQuery = Query<User>(context);
     
     if (username != null) {
       userQuery.where((user) => user.username).contains(username, caseSensitive: false);
@@ -25,10 +22,7 @@ class UsersController extends ResourceController {
   @Operation.get('id')
   Future<Response> getUserByID(@Bind.path('id') int id) async {
     final userQuery = Query<User>(context)
-      ..where((user) => user.id).equalTo(id)
-      ..join(set: (u) => u.cvs)
-      ..join(set: (u) => u.documents)
-      ..join(object: (u) => u.organization);
+      ..where((user) => user.id).equalTo(id);
 
     final user = await userQuery.fetchOne();
 

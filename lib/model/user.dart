@@ -29,9 +29,6 @@ class _User extends ResourceOwnerTableDefinition {
   String city;
 
   @Column(nullable: true)
-  Document socialNetworks;
-
-  @Column(nullable: true)
   DateTime birthDate;
 
   ManagedSet<DocumentFile> documents;
