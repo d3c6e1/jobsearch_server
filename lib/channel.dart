@@ -37,6 +37,7 @@ class JobsearchServerChannel extends ApplicationChannel {
   @override
   Controller get entryPoint {
     final router = Router();
+    
     /* OAuth 2.0 Resource Owner Grant Endpoint */
     router
       .route('/auth/token')

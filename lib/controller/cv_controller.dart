@@ -33,6 +33,9 @@ class CVController extends ResourceController{
   
   @Operation.post()
   Future<Response> createCV(@Bind.body(ignore: ['id']) CV cv) async {
+    if(cv.owner.id != request.authorization.ownerID){
+      return Response.unauthorized();
+    }
     final query = Query<CV>(context)
       ..values = cv;
 
