@@ -3,13 +3,18 @@
 ## __dart: 2.7.2__
 
 __Setting Up a Database__
-```
+```sql
 CREATE DATABASE jobsearch;
 CREATE USER dbuser WITH createdb;
 ALTER USER dbuser WITH password 'qaz';
 GRANT all ON database jobsearch TO dbuser;
 ```
 
+Next, run the following commands:
+```
+aqueduct db generate
+aqueduct db upgrade
+```
 
 ## Running the Application Locally
 
