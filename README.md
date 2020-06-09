@@ -10,7 +10,7 @@ ALTER USER dbuser WITH password 'qaz';
 GRANT all ON database jobsearch TO dbuser;
 ```
 
-Next, run the following commands:
+To upgrade your DB run the following commands:
 ```
 aqueduct db generate
 aqueduct db upgrade
