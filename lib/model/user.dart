@@ -22,6 +22,15 @@ class _User extends ResourceOwnerTableDefinition {
   @Column(nullable: true, unique: true)
   String email;
 
+  @Column(nullable: true, unique: true)
+  String phoneNumber;
+
+  @Column(nullable: true)
+  String city;
+
+  @Column(nullable: true)
+  DateTime birthDate;
+
   ManagedSet<DocumentFile> documents;
 
   ManagedSet<CV> cvs;

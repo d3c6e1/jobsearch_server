@@ -1,6 +1,6 @@
 name: jobsearch_server
 description: Server side for jobsearch project
-version: 0.0.1
+version: 0.0.2
 author: Dmitriy <dmytro.koval@nure.ua>
 
 environment:

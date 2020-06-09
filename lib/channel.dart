@@ -37,6 +37,7 @@ class JobsearchServerChannel extends ApplicationChannel {
   @override
   Controller get entryPoint {
     final router = Router();
+    
     /* OAuth 2.0 Resource Owner Grant Endpoint */
     router
       .route('/auth/token')
@@ -54,7 +55,6 @@ class JobsearchServerChannel extends ApplicationChannel {
       .link(() => Authorizer.bearer(authServer))
       .link(() => IdentityController(context));
 
-    //сделать нормальную аутентификацию
     router
       .route('/files/[:id]')
       .link(() => Authorizer.bearer(authServer))
@@ -62,6 +62,7 @@ class JobsearchServerChannel extends ApplicationChannel {
 
     router
       .route('/users/[:id]')
+      .link(() => Authorizer.basic(authServer))
       .link(() => UsersController(context));
 
     router
@@ -69,7 +70,8 @@ class JobsearchServerChannel extends ApplicationChannel {
       .link(() => OrganizationController(context));
 
     router
-      .route('/cvs/[:id]')
+      .route('/cvs[/:id]')
+      .link(() => Authorizer.basic(authServer))
       .link(() => CVController(context));
     
     router

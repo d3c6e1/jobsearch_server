@@ -8,10 +8,14 @@ class IdentityController extends ResourceController {
 
   @Operation.get()
   Future<Response> getIdentity() async {
-    var q = Query<User>(context)
-      ..where((u) => u.id).equalTo(request.authorization.ownerID);
+    final userQuery = Query<User>(context)
+      ..where((user) => user.id).equalTo(request.authorization.ownerID)
+      ..join(set: (u) => u.cvs)
+      ..join(set: (u) => u.documents)
+      ..join(object: (u) => u.organization);
 
-    var user = await q.fetchOne();
+    final user = await userQuery.fetchOne();
+    
     if (user == null) {
       return  Response.notFound();
     }
