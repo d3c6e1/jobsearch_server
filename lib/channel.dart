@@ -41,6 +41,7 @@ class JobsearchServerChannel extends ApplicationChannel {
     /* OAuth 2.0 Resource Owner Grant Endpoint */
     router
       .route('/auth/token')
+      .link(() => Authorizer.basic(authServer))
       .link(() => AuthController(authServer));
 
     /* Create an account */
@@ -67,6 +68,7 @@ class JobsearchServerChannel extends ApplicationChannel {
 
     router
       .route('/organizations/[:id]')
+      .link(() => Authorizer.basic(authServer))
       .link(() => OrganizationController(context));
 
     router
@@ -76,6 +78,7 @@ class JobsearchServerChannel extends ApplicationChannel {
     
     router
       .route('/vacancies/[:id]')
+      .link(() => Authorizer.basic(authServer))
       .link(() => VacanciesController(context));
 
     return router;
