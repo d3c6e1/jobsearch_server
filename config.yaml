@@ -1,6 +1,6 @@
 database:
-  username: lxeypmcyqefehg
-  password: f58283f1d3af465f03c33d44a5eca9361d8ddd47f20d62cd5a6b9f2eafcd105e
-  host: ec2-54-247-79-178.eu-west-1.compute.amazonaws.com
+  username: dbuser
+  password: qaz
+  host: localhost
   port: 5432
-  databaseName: de30h9c3oi85kq
+  databaseName: jobsearch
