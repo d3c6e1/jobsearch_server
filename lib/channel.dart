@@ -57,6 +57,11 @@ class JobsearchServerChannel extends ApplicationChannel {
       .link(() => IdentityController(context));
 
     router
+      .route('/documents/*')
+      .link(() => Authorizer.bearer(authServer))
+      .link(() => FileController('documents/'));
+
+    router
       .route('/files/[:id]')
       .link(() => Authorizer.bearer(authServer))
       .link(() => DocumentFilesController(context));
