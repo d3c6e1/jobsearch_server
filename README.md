@@ -1,8 +1,14 @@
-# jobsearch_server
+# Jobsearch API
 
-## __dart: 2.7.2__
+*API server developed with framework [Aqueduct](https://aqueduct.io/) on [Dart](https://dart.dev/)*
 
-__Setting Up a Database__
+<br>
+
+#### __Running on: dart: 2.7.2__
+
+<br>
+
+__Setting Up a local Database__
 ```sql
 CREATE DATABASE jobsearch;
 CREATE USER dbuser WITH createdb;

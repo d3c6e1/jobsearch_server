@@ -30,7 +30,7 @@ class CVController extends ResourceController{
     }
     return Response.ok(cv);
   }
-  
+
   @Operation.post()
   Future<Response> createCV(@Bind.body(ignore: ['id']) CV cv) async {
     if(cv.owner.id != request.authorization.ownerID){

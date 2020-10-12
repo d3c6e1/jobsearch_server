@@ -2,15 +2,15 @@ import 'package:jobsearch_server/jobsearch_server.dart';
 import 'package:jobsearch_server/model/user.dart';
 
 class UsersController extends ResourceController {
-  
+
   UsersController(this.context);
 
   final ManagedContext context;
-  
+
   @Operation.get()
   Future<Response> getAllUsers({@Bind.query('username') String username}) async {
     final userQuery = Query<User>(context);
-    
+
     if (username != null) {
       userQuery.where((user) => user.username).contains(username, caseSensitive: false);
     }

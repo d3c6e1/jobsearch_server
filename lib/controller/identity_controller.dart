@@ -15,7 +15,7 @@ class IdentityController extends ResourceController {
       ..join(object: (u) => u.organization);
 
     final user = await userQuery.fetchOne();
-    
+
     if (user == null) {
       return  Response.notFound();
     }
