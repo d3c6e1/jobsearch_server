@@ -11,7 +11,7 @@ class OrganizationController extends ResourceController{
     final query = Query<Organization>(context)
       ..join(set: (o) => o.vacancies)
       ..join(object: (o) => o.owner);
-      
+
     if (name != null) {
       query.where((org) => org.name).contains(name, caseSensitive: false);
     }

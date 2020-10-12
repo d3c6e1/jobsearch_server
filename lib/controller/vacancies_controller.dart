@@ -5,7 +5,7 @@ class VacanciesController extends ResourceController{
   VacanciesController(this.context);
 
   final ManagedContext context;
-  
+
   @Operation.get()
   Future<Response> getAllVacancies({@Bind.query('name') String name}) async {
     final query = Query<Vacancy>(context)

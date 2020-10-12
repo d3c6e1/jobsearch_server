@@ -1,7 +1,7 @@
 name: jobsearch_server
 description: Server side for jobsearch project
 version: 0.0.2
-author: Dmitriy <dmytro.koval@nure.ua>
+author: d3c6e1 <>
 
 environment:
   sdk: ">=2.0.0 <3.0.0"

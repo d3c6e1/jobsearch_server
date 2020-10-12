@@ -20,7 +20,7 @@ class DocumentFilesController extends ResourceController{
     }
     return Response.ok(doc);
   }
-  
+
   @Operation.post()
   Future<Response> createDocumentFile(@Bind.body(ignore: ["id"]) DocumentFile documentFile) async {
     final query = Query<DocumentFile>(context)
